@@ -23,7 +23,7 @@ airports <- airports_raw %>%
     filter(!is.na(coordinates)) %>%
     # NOTE: original script had "small airport" (space) which never matched
     # anything - fixed to "small_airport" (underscore) to match the source data
-    filter(type %in% c("small_airport", "medium_airport", "large_airport"))
+    filter(type %in% c("large_airport"))
 
 coords <- strsplit(airports$coordinates, ",")
 airports$latitude  <- as.numeric(trimws(sapply(coords, `[`, 1)))
@@ -79,10 +79,11 @@ ui <- fluidPage(
             width = 3,
             selectInput(
                 inputId  = "center_choice",
-                label    = "Geographic center of Europe:",
+                label    = HTML('<strong>&#128205; Geographic center of Europe:</strong>'),
                 choices  = names(centers),
                 selected = "Frankfurt Airport, DE"
             ),
+            helpText(em("Start here \u2014 this sets the map center and the circle's origin.")),
             sliderInput(
                 inputId = "radius_km",
                 label   = "Radius (km):",
@@ -95,9 +96,8 @@ ui <- fluidPage(
             downloadButton("download_csv", "Download airports CSV"),
             hr(),
             helpText(
-                "Airport data is from the OpenFlights Airport Database ",
-                "made available under the Open Database License.",
-                "Only 'Large Airports' displayed."
+                "Map shows airports (small/medium/large) inside the chosen radius, ",
+                "excluding airports located in EU/EEA/UK/CH member states."
             )
         ),
         mainPanel(
