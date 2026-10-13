@@ -386,7 +386,7 @@ server <- function(input, output, session) {
         )
         
         leaflet() %>%
-            addProviderTiles(providers$CartoDB.Positron) %>%
+            addProviderTiles(providers$Stadia.Outdoors) %>%
             addPolygons(
                 data       = circle_wgs84(),
                 color      = "red",
